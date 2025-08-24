@@ -24,8 +24,10 @@ export default function App() {
             'window.updateStyle - ',
             (window as any).updateStyle
         );
-        if (dzsChipSelectorWrapper && dzsChipSelectorWrapper.webComponent) {
-            const dzsChipSelector: DzsChipSelector = dzsChipSelectorWrapper.webComponent;
+        console.log('dzsChipSelectorWrapper - ', dzsChipSelectorWrapper);
+        console.log('dzsChipSelectorWrapper - ', dzsChipSelectorWrapper?.webComponent);
+        if (dzsChipSelectorWrapper && dzsChipSelectorWrapper) {
+            const dzsChipSelector: DzsChipSelector = dzsChipSelectorWrapper as unknown as DzsChipSelector;
             dzsChipSelector.assignOnUpdateFunction = onUpdate(setCurrentOptions);
             addStyle(
                 'https://unpkg.com/chip-selector/dist/style/skins/skin-default.css',
