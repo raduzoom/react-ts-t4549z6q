@@ -1,8 +1,7 @@
-import * as React from 'react';
 import './style.css';
 import { useRef, useEffect, useState } from 'react';
 import { dzsChipSelectorWebComponent_init } from 'chip-selector/dist/dzsChipSelectorWebComponents';
-import { DzsChipSelector } from 'chip-selector';
+import { DzsChipSelector, DzsChipSelectorWrapper, ChipSelectorItem } from 'chip-selector';
 import { addStyle, onUpdate } from './helper';
 
 dzsChipSelectorWebComponent_init();
@@ -12,25 +11,25 @@ export default function App() {
     );
 
     const [currentOptions, setCurrentOptions] = useState(chipSelectorOptions);
-    const elementRef = useRef(null);
+    const elementRef = useRef<DzsChipSelectorWrapper>(null);
 
     useEffect(() => {
         console.log('[] curr options - ', currentOptions);
     }, [currentOptions]);
     useEffect(() => {
-        const dzsChipSelector: DzsChipSelector = elementRef.current;
+        const dzsChipSelectorWrapper: DzsChipSelectorWrapper | null = elementRef.current;
         console.log(
             'try, - ',
-            dzsChipSelector,
-            dzsChipSelector.assignOnUpdateFunction,
+            dzsChipSelectorWrapper,
             'window.updateStyle - ',
             (window as any).updateStyle
         );
-        if (dzsChipSelector) {
+        if (dzsChipSelectorWrapper && dzsChipSelectorWrapper.webComponent) {
+            const dzsChipSelector: DzsChipSelector = dzsChipSelectorWrapper.webComponent;
             dzsChipSelector.assignOnUpdateFunction = onUpdate(setCurrentOptions);
             addStyle(
                 'https://unpkg.com/chip-selector/dist/style/skins/skin-default.css',
-                dzsChipSelector
+                dzsChipSelectorWrapper
             );
         }
         (window as any).updateStyle();
@@ -41,7 +40,7 @@ export default function App() {
             <p>This is React bootstrapped web component chip-selector</p>
             <h6>options rendered from React: </h6>
             <em>
-                {currentOptions.map((option) => {
+                {currentOptions.map((option: ChipSelectorItem) => {
                     if (option.currentStatus === 'checked') {
                         return `${option.value} `;
                     }

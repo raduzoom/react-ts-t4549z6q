@@ -1,16 +1,17 @@
-import { ChipSelectorItem } from 'chip-selector';
+import * as React from 'react';
+import { ChipSelectorItem, DzsChipSelectorWrapper } from 'chip-selector';
 
-export const addStyle = (url, $myRef) => {
+export const addStyle = (url: string, $myRef: DzsChipSelectorWrapper) => {
   const style = document.createElement('link');
   style.href = url;
   style.rel = 'stylesheet';
-  style.async = true;
+  (style as any).async = true;
 
   // document.head.appendChild(style);
   $myRef.wrapper.appendChild(style);
 };
 
-export const onUpdate = (setCurrentOptions) => {
+export const onUpdate = (setCurrentOptions: React.Dispatch<React.SetStateAction<ChipSelectorItem[]>>) => {
   return async (allOptions: ChipSelectorItem[]) => {
     console.log('all the options - - ', allOptions);
     const selectedOptions = allOptions.filter(
